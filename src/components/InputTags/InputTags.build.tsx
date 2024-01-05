@@ -30,12 +30,15 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     borderRadius: style?.borderRadius || '12px',
   };
   const [tags, setTags] = useState([
-    { name: 'High tech' },
-    { name: 'Media' },
-    { name: 'Technology' },
-    { name: 'Business' },
-    { name: 'Business Business Business' },
-    { name: 'Bns' },
+    {
+      name: 'Tag1',
+    },
+    {
+      name: 'Tag2',
+    },
+    {
+      name: 'Tag3',
+    },
   ]);
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key !== 'Enter') return;

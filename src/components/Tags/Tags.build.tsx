@@ -31,22 +31,13 @@ const Tags: FC<ITagsProps> = ({ style, className, classNames = [] }) => {
   } = useEnhancedNode();
   const Tags = [
     {
-      name: 'High tech',
+      name: 'Tag1',
     },
     {
-      name: 'Media',
+      name: 'Tag2',
     },
     {
-      name: 'Technology',
-    },
-    {
-      name: 'Buisness',
-    },
-    {
-      name: 'Buisness Buisness Buisness',
-    },
-    {
-      name: 'Bns',
+      name: 'Tag3',
     },
   ];
   return (
