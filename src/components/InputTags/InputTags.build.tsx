@@ -47,6 +47,9 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     setTags([...tags, { name: value }]);
     e.currentTarget.value = '';
   }
+  function remove(index: number) {
+    setTags(tags.filter((_elem, i) => i !== index));
+  }
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((Tag, index) => (
