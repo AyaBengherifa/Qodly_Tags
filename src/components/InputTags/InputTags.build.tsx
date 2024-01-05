@@ -53,6 +53,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
         <div style={tagsCss} key={index}>
           {Tag.name}
           <IoIosCloseCircle
+            onClick={() => remove(index)}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
