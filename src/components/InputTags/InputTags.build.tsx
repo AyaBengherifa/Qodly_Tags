@@ -45,6 +45,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     const value = e.currentTarget.value;
     if (!value.trim()) return;
     setTags([...tags, { name: value }]);
+    e.currentTarget.value = '';
   }
   return (
     <div ref={connect} className={cn(className, classNames)}>
