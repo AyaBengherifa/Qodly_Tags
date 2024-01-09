@@ -28,6 +28,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     borderWidth: style?.borderWidth || '0px',
     borderStyle: style?.borderStyle || 'none',
     borderRadius: style?.borderRadius || '12px',
+    alignItems: 'center',
   };
   const [tags, setTags] = useState([
     {
@@ -57,7 +58,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex items-center mx-3 cursor-pointer"
+            className="inline-flex mx-2 cursor-pointer"
           />
         </div>
       ))}

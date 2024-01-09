@@ -24,6 +24,7 @@ const Tags: FC<ITagsProps> = ({ style, className, classNames = [] }) => {
     borderWidth: style?.borderWidth || '0px',
     borderStyle: style?.borderStyle || 'none',
     borderRadius: style?.borderRadius || '12px',
+    alignItems: 'center',
   };
 
   const {

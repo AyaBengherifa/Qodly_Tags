@@ -28,6 +28,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     borderWidth: style?.borderWidth || '0px',
     borderStyle: style?.borderStyle || 'none',
     borderRadius: style?.borderRadius || '12px',
+    alignItems: 'center',
   };
   const {
     sources: { datasource: ds },
@@ -71,7 +72,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
           {tag[field as keyof typeof tag] as string}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex items-center mx-3 cursor-pointer"
+            className="inline-flex mx-2 cursor-pointer"
           />
         </div>
       ))}
