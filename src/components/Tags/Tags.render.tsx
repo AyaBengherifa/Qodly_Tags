@@ -23,6 +23,7 @@ const Tags: FC<ITagsProps> = ({ field, style, className, classNames = [] }) => {
     borderColor: style?.borderColor || '',
     borderWidth: style?.borderWidth || '0px',
     borderStyle: style?.borderStyle || 'none',
+    alignItems: 'center',
     borderRadius: style?.borderRadius || '12px',
   };
   const { connect } = useRenderer();

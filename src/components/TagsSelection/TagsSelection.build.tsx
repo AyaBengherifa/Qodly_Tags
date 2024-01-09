@@ -41,6 +41,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
     borderWidth: style?.borderWidth || '0px',
     borderStyle: style?.borderStyle || 'none',
     borderRadius: style?.borderRadius || '12px',
+    alignItems: 'center',
   };
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key !== 'Enter') return;
@@ -89,7 +90,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex items-center mx-3 cursor-pointer"
+            className="inline-flex mx-2 cursor-pointer"
           />
         </div>
       ))}
@@ -104,7 +105,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           onKeyDown={handleKeyDown}
         />
         {showDropdown && (
-          <div className="absolute min-w-80 px-6 py-12 top-100% left-0 z-1 bg-white border-1 border-solid border-slate-500 rounded shadow">
+          <div className="absolute w-50 px-4 py-2 left-0 z-1 bg-white border-1 border-solid border-slate-500 rounded shadow">
             {filteredTags.map((tag, index) => (
               <div
                 className="cursor-pointer"
