@@ -71,12 +71,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
           {tag[field as keyof typeof tag] as string}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              marginLeft: '3px',
-              cursor: 'pointer',
-            }}
+            className="inline-flex items-center mx-3 cursor-pointer"
           />
         </div>
       ))}

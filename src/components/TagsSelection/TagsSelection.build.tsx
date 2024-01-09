@@ -89,17 +89,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              marginLeft: '3px',
-              cursor: 'pointer',
-            }}
+            className="inline-flex items-center mx-3 cursor-pointer"
           />
         </div>
       ))}
 
-      <div style={{ position: 'relative' }} ref={dropdownRef}>
+      <div className="relative" ref={dropdownRef}>
         <input
           type="text"
           placeholder="Type something"
@@ -109,23 +104,10 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           onKeyDown={handleKeyDown}
         />
         {showDropdown && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              zIndex: 1,
-              backgroundColor: '#fff',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
-          >
+          <div className="absolute min-w-80 px-6 py-12 top-100% left-0 z-1 bg-white border-1 border-solid border-slate-500 rounded shadow">
             {filteredTags.map((tag, index) => (
               <div
-                style={{
-                  cursor: 'pointer',
-                }}
+                className="cursor-pointer"
                 key={index}
                 onClick={() => handleTagSelection(tag.name)}
               >
