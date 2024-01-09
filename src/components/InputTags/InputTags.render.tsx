@@ -74,7 +74,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              marginLeft: '5px',
+              marginLeft: '3px',
               cursor: 'pointer',
             }}
           />

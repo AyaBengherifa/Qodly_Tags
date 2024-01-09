@@ -12,12 +12,15 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
     connectors: { connect },
   } = useEnhancedNode();
   const [tags, setTags] = useState([
-    { name: 'High tech' },
-    { name: 'Media' },
-    { name: 'Technology' },
-    { name: 'Business' },
-    { name: 'Business Business Business' },
-    { name: 'Bns' },
+    {
+      name: 'Tag1',
+    },
+    {
+      name: 'Tag2',
+    },
+    {
+      name: 'Tag3',
+    },
   ]);
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',

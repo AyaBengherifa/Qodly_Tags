@@ -30,18 +30,25 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     borderRadius: style?.borderRadius || '12px',
   };
   const [tags, setTags] = useState([
-    { name: 'High tech' },
-    { name: 'Media' },
-    { name: 'Technology' },
-    { name: 'Business' },
-    { name: 'Business Business Business' },
-    { name: 'Bns' },
+    {
+      name: 'Tag1',
+    },
+    {
+      name: 'Tag2',
+    },
+    {
+      name: 'Tag3',
+    },
   ]);
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key !== 'Enter') return;
     const value = e.currentTarget.value;
     if (!value.trim()) return;
     setTags([...tags, { name: value }]);
+    e.currentTarget.value = '';
+  }
+  function remove(index: number) {
+    setTags(tags.filter((_elem, i) => i !== index));
   }
   return (
     <div ref={connect} className={cn(className, classNames)}>
@@ -49,6 +56,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
         <div style={tagsCss} key={index}>
           {Tag.name}
           <IoIosCloseCircle
+            onClick={() => remove(index)}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
