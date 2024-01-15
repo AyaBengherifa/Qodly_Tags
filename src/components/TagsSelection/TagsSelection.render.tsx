@@ -57,8 +57,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     if (e.key !== 'Enter') return;
     const value = e.currentTarget.value;
     const newTag = { [field as keyof typeof tags]: value };
-    if (!value.trim()) return;
+    const isDuplicate = tags.some((tag) => tag[field as keyof typeof tag] === value);
+    if (tags.length >= 3 || isDuplicate || !value.trim()) {
+      return;
+    }
     setTags([...tags, newTag]);
+    ds.setValue<datasources.IEntity[]>(null, [...tags, newTag]);
     setSelectedTag('');
   }
 
@@ -76,6 +80,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     if (tagName) {
       const newTag = { [field as keyof typeof tags]: tagName };
       setTags([...tags, newTag]);
+      ds.setValue<datasources.IEntity[]>(null, [...tags, newTag]);
       setSelectedTag('');
       setShowDropdown(false);
     }
@@ -106,7 +111,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
           {tag[field as keyof typeof tag] as string}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex mr-2 cursor-pointer"
+            className="inline-flex mx-2 cursor-pointer"
           />
         </div>
       ))}
@@ -118,6 +123,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
           onClick={handleInputClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+          disabled={tags.length >= 3}
         />
         {showDropdown && (
           <div className="absolute min-w-80 px-6 py-12 top-100% left-0 z-1 bg-white border-1 border-solid border-slate-500 rounded shadow">

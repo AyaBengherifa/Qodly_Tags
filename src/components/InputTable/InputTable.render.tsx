@@ -1,14 +1,14 @@
-import { DataLoader, useRenderer, useSources } from '@ws-ui/webform-editor';
+import { useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
+import { FC, useEffect, useState, CSSProperties } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
-import { FC, useEffect, useState, CSSProperties, useMemo, useCallback } from 'react';
+import { IInputTableProps } from './InputTable.config';
 
-import { IInputTagsProps } from './InputTags.config';
-
-const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = [] }) => {
+const InputTable: FC<IInputTableProps> = ({style, className, classNames = [] }) => {
   const { connect } = useRenderer();
-  const [tags, setTags] = useState<datasources.IEntity[]>(() => []);
-
+  const {
+    sources: { datasource: ds },
+  } = useSources();
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
     padding: style?.padding || '6px 12px',
@@ -30,50 +30,45 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     borderRadius: style?.borderRadius || '12px',
     alignItems: 'center',
   };
-  const {
-    sources: { datasource: ds },
-  } = useSources();
-  const loader = useMemo<DataLoader | null>(() => {
-    if (!ds) {
-      return null;
-    }
-    return DataLoader.create(ds, [field as string]);
-  }, [field, ds]);
-
-  const updateFromLoader = useCallback(() => {
-    if (!loader) {
-      return;
-    }
-    setTags(loader.page);
-  }, [loader]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState<string>('');
 
   useEffect(() => {
-    if (!loader || !ds) return;
+    if (!ds) return;
 
-    loader.sourceHasChanged().then(updateFromLoader);
-  }, []);
+    const listener = async () => {
+      const v = await ds.getValue<string[]>();
+      setTags(v || []);
+    };
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Enter') return;
-    const value = e.currentTarget.value;
-    const isDuplicate = tags.some((tag) => tag[field as keyof typeof tag] === value);
-    if (tags.length >= 3 || isDuplicate || !value.trim()) {
-      return;
+    listener();
+
+    ds.addListener('changed', listener);
+
+    return () => {
+      ds.removeListener('changed', listener);
+    };
+  }, [ds]);
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (newTag.trim() !== '') {
+        setTags([...tags, newTag.trim()]);
+        setNewTag('');
+        ds.setValue(null, [...tags, newTag.trim()]);
+      }
     }
-    const newTag = { [field as keyof typeof tags]: value };
-    setTags([...tags, newTag]);
-    ds.setValue<datasources.IEntity[]>(null, [...tags, newTag]);
-    e.currentTarget.value = '';
   }
-
   function remove(index: number) {
     setTags(tags.filter((_elem, i) => i !== index));
   }
+
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((tag, index) => (
         <div style={tagsCss} key={index}>
-          {tag[field as keyof typeof tag] as string}
+          {tag}
           <IoIosCloseCircle
             onClick={() => remove(index)}
             className="inline-flex mx-2 cursor-pointer"
@@ -83,11 +78,11 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
       <input
         onKeyDown={handleKeyDown}
         type="text"
-        disabled={tags.length >= 3}
         placeholder="Type something"
+        value={newTag}
+        onChange={(e) => setNewTag(e.target.value)}
       />
     </div>
   );
 };
-
-export default InputTags;
+export default InputTable;

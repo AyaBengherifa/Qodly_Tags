@@ -90,7 +90,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex mx-2 cursor-pointer"
+            className="inline-flex ml-2 cursor-pointer"
           />
         </div>
       ))}
@@ -105,7 +105,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           onKeyDown={handleKeyDown}
         />
         {showDropdown && (
-          <div className="absolute w-50 px-4 py-2 left-0 z-1 bg-white border-1 border-solid border-slate-500 rounded shadow">
+          <div className="absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
             {filteredTags.map((tag, index) => (
               <div
                 className="cursor-pointer"
