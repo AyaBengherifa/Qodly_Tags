@@ -2,12 +2,12 @@ import { DataLoader, useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { FC, useEffect, useState, CSSProperties, useMemo, useCallback } from 'react';
-
 import { IInputTagsProps } from './InputTags.config';
 
 const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = [] }) => {
   const { connect } = useRenderer();
-  const [tags, setTags] = useState<datasources.IEntity[]>(() => []);
+
+  const [tags, setTags] = useState<any[]>(() => []);
 
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
@@ -30,9 +30,11 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     borderRadius: style?.borderRadius || '12px',
     alignItems: 'center',
   };
+
   const {
     sources: { datasource: ds },
   } = useSources();
+
   const loader = useMemo<DataLoader | null>(() => {
     if (!ds) {
       return null;
@@ -41,7 +43,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
   }, [field, ds]);
 
   const updateFromLoader = useCallback(() => {
-    if (!loader) {
+    if (!loader || !loader.page) {
       return;
     }
     setTags(loader.page);
@@ -50,8 +52,13 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
   useEffect(() => {
     if (!loader || !ds) return;
 
-    loader.sourceHasChanged().then(updateFromLoader);
-  }, []);
+    const fetchData = async () => {
+      await loader.sourceHasChanged();
+      updateFromLoader();
+    };
+
+    fetchData();
+  }, [loader, ds, updateFromLoader]);
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key !== 'Enter') return;
@@ -62,13 +69,15 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     }
     const newTag = { [field as keyof typeof tags]: value };
     setTags([...tags, newTag]);
-    ds.setValue<datasources.IEntity[]>(null, [...tags, newTag]);
+    ds.setValue(null, newTag[field as keyof typeof newTag]);
     e.currentTarget.value = '';
+    console.log(e.currentTarget.value);
   }
-
   function remove(index: number) {
     setTags(tags.filter((_elem, i) => i !== index));
+    ds.setValue(null, tags);
   }
+
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((tag, index) => (
