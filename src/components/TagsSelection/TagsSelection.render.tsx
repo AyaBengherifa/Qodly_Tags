@@ -80,13 +80,19 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     setInputValue(value);
     setShowDropdown(value !== '' && filteredTags.length > 0);
   }
+  const updateDataSource = (selectedTags: (string | null)[]) => {
+    if (!ds) return;
+    ds.setValue(null, selectedTags as (string | null)[]);
+  };
 
   function handleTagSelection(tag: any) {
     const tagName = tag[field as keyof typeof tag] as string | undefined;
     if (tagName) {
       const isDuplicate = selectedTags.includes(tagName);
       if (!isDuplicate) {
-        setSelectedTags([...selectedTags, tagName]);
+        const newSelectedTags = [...selectedTags, tagName];
+        setSelectedTags(newSelectedTags);
+        updateDataSource(newSelectedTags);
         setShowDropdown(false);
       }
     }
@@ -132,7 +138,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
           onClick={handleInputClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          // disabled={tags.length >= 3}
+          disabled={tags.length >= 3}
         />
         {showDropdown && (
           <div className="absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
