@@ -1,6 +1,7 @@
 import { EComponentKind, T4DComponentConfig } from '@ws-ui/webform-editor';
 import { Settings } from '@ws-ui/webform-editor';
 import { RiDropdownList } from 'react-icons/ri';
+import { get as _get, set as _set } from 'lodash';
 
 import TagsSelectionSettings, { BasicSettings } from './TagsSelection.settings';
 

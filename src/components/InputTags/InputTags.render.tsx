@@ -1,7 +1,8 @@
-import { DataLoader, useRenderer, useSources } from '@ws-ui/webform-editor';
+import { useRenderer, useSources } from '@ws-ui/webform-editor';
+import { get as _get, set as _set } from 'lodash';
 import cn from 'classnames';
+import { CSSProperties, FC, useEffect, useState } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
-import { FC, useEffect, useState, CSSProperties, useMemo, useCallback } from 'react';
 import { IInputTagsProps } from './InputTags.config';
 
 const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = [] }) => {
@@ -35,43 +36,38 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     sources: { datasource: ds },
   } = useSources();
 
-  const loader = useMemo<DataLoader | null>(() => {
-    if (!ds) {
-      return null;
-    }
-    return DataLoader.create(ds, [field as string]);
-  }, [field, ds]);
-
-  const updateFromLoader = useCallback(() => {
-    if (!loader || !loader.page) {
-      return;
-    }
-    setTags(loader.page);
-  }, [loader]);
-
   useEffect(() => {
-    if (!loader || !ds) return;
+    if (!ds) return;
 
     const fetchData = async () => {
-      await loader.sourceHasChanged();
-      updateFromLoader();
+      const value = await ds.getValue();
+      setTags(value);
     };
 
     fetchData();
-  }, [loader, ds, updateFromLoader]);
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Enter') return;
+    ds.addListener('changed', fetchData);
+
+    return () => ds.removeListener('changed', fetchData);
+  }, [ds]);
+
+  async function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'Enter' || !field) return;
+
     const value = e.currentTarget.value;
-    const isDuplicate = tags.some((tag) => tag[field as keyof typeof tag] === value);
+    const isDuplicate = tags.some((tag) => _get(tag, field) === value);
     if (tags.length >= 3 || isDuplicate || !value.trim()) {
       return;
     }
-    const newTag = { [field as keyof typeof tags]: value };
-    setTags([...tags, newTag]);
-    ds.setValue(null, newTag[field as keyof typeof newTag]);
-    e.currentTarget.value = '';
-    console.log(e.currentTarget.value);
+    const newTag = {};
+    _set(newTag, field, value);
+    // await ds.setValue(null, newTag[field as keyof typeof newTag], true);
+    const newTags = [...tags, newTag];
+    if (ds && ds.dataType === 'array') {
+      await ds.setValue(null, newTags);
+    }
+
+    (e.target as any).value = '';
   }
   function remove(index: number) {
     setTags(tags.filter((_elem, i) => i !== index));
@@ -82,7 +78,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((tag, index) => (
         <div style={tagsCss} key={index}>
-          {tag[field as keyof typeof tag] as string}
+          {_get(tag, field as string)}
           <IoIosCloseCircle
             onClick={() => remove(index)}
             className="inline-flex mx-2 cursor-pointer"

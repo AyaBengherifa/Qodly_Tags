@@ -3,10 +3,23 @@ import { BASIC_SETTINGS, DEFAULT_SETTINGS, load } from '@ws-ui/webform-editor';
 
 const commonSettings: TSetting[] = [
   {
-    key: 'field',
-    label: 'field',
-    type: ESetting.TEXT_FIELD,
-    defaultValue: 'Qodly',
+    key: 'dataAccess',
+    label: 'Data Access',
+    type: ESetting.GROUP,
+    tipKey: 'editors:webform:properties:dataaccess',
+    components: [
+      {
+        key: 'datasource',
+        label: 'DataSource',
+        type: ESetting.DS_AUTO_SUGGEST,
+      },
+      {
+        key: 'field',
+        label: 'field',
+        type: ESetting.TEXT_FIELD,
+        defaultValue: 'Qodly',
+      },
+    ],
   },
 ];
 
@@ -17,7 +30,13 @@ const Settings: TSetting[] = [
     type: ESetting.GROUP,
     components: commonSettings,
   },
-  ...load(DEFAULT_SETTINGS).filter('background', 'dimensions', 'style.textAlign', 'display'),
+  ...load(DEFAULT_SETTINGS).filter(
+    'dataAccess',
+    'background',
+    'dimensions',
+    'style.textAlign',
+    'display',
+  ),
 ];
 
 export const BasicSettings: TSetting[] = [
