@@ -1,6 +1,8 @@
-import { DataLoader, useRenderer, useSources } from '@ws-ui/webform-editor';
+import { useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { FC, useEffect, useState, CSSProperties, useMemo, useCallback, useRef } from 'react';
+import { get as _get, set as _set } from 'lodash';
+
+import { FC, useEffect, useState, CSSProperties, useRef, useMemo } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { ITagsSelectionProps } from './TagsSelection.config';
 
@@ -11,6 +13,11 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
   const [selectedTags, setSelectedTags] = useState<any[]>(() => []);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [filteredTags, setFilteredTags] = useState<any[]>([]);
+
+  useEffect(() => {
+    setFilteredTags(tags);
+  }, [tags]);
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
     padding: style?.padding || '6px 12px',
@@ -35,65 +42,74 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
   const {
     sources: { datasource: ds },
   } = useSources();
-  const loader = useMemo<DataLoader | null>(() => {
-    if (!ds) {
-      return null;
-    }
-    return DataLoader.create(ds, [field as string]);
-  }, [field, ds]);
-
-  const updateFromLoader = useCallback(() => {
-    if (!loader) {
-      return;
-    }
-    setTags(loader.page);
-  }, [loader]);
 
   useEffect(() => {
-    if (!loader || !ds) return;
+    if (!ds) return;
 
-    loader.sourceHasChanged().then(updateFromLoader);
-  }, []);
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Enter') return;
+    const fetchData = async () => {
+      const value = await ds.getValue();
+      setTags(value);
+    };
+
+    fetchData();
+
+    ds.addListener('changed', fetchData);
+
+    return () => ds.removeListener('changed', fetchData);
+  }, [ds]);
+
+  async function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'Enter' || !field) return;
+
     const value = e.currentTarget.value;
-    if (!value) return;
-    const newTag = { [field as keyof typeof tags]: value };
-    const isDuplicate = tags.some((tag) => tag[field as keyof typeof tag] === value);
-    if (tags.length >= 3 || isDuplicate) {
+    const isDuplicate = tags.some((tag) => _get(tag, field) === value);
+    if (isDuplicate || !value.trim()) {
       return;
     }
-    setTags([...tags, newTag]);
-    ds.setValue(null, newTag[field as keyof typeof newTag]);
-    e.currentTarget.value = '';
+    const focusedTag = tags.find((tag) => _get(tag, field) === value);
+    const selectedTag = focusedTag || { [field]: value };
+    const newTags = [...tags, selectedTag];
+    setTags(newTags);
+    setSelectedTags([...selectedTags, selectedTag]);
+
+    if (ds && ds.dataType === 'array') {
+      await ds.setValue(null, newTags);
+    }
+    (e.target as any).value = '';
   }
-  const filteredTags = useMemo(() => {
-    const lowerCaseValue = inputValue.toLowerCase();
-    const limitedTags = tags.slice(0, 10);
-    return limitedTags.filter((tag) =>
-      (tag[field as keyof typeof tag] as string).toLowerCase().includes(lowerCaseValue),
-    );
-  }, [tags, field]);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setInputValue(value);
     setShowDropdown(value !== '' && filteredTags.length > 0);
   }
-
-  function handleTagSelection(tag: any) {
-    const tagName = tag[field as keyof typeof tag] as string | undefined;
-    if (tagName) {
-      const isDuplicate = selectedTags.includes(tagName);
-      if (!isDuplicate) {
-        setSelectedTags([...selectedTags, tagName]);
-        setShowDropdown(false);
-      }
-    }
+  function remove(index: number) {
+    const updatedTags = [...selectedTags];
+    updatedTags.splice(index, 1);
+    setSelectedTags(updatedTags);
   }
 
-  function remove(tagName: string) {
-    setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
+  useMemo(() => {
+    const lowerCaseValue = inputValue.toLowerCase();
+    const limitedTags = tags.slice(0, 10);
+    setFilteredTags(
+      limitedTags.filter((tag) =>
+        _get(tag, field as string)
+          .toLowerCase()
+          .includes(lowerCaseValue),
+      ),
+    );
+  }, [tags, field, inputValue]);
+  function handleTagSelection(tag: any) {
+    const isDuplicate = selectedTags.some(
+      (selectedTag) => _get(selectedTag, field as string) === _get(tag, field as string),
+    );
+    if (!isDuplicate) {
+      const newTag = { ...tag };
+      setSelectedTags((prevTags) => [...prevTags, newTag]);
+    }
+    setInputValue('');
+    setShowDropdown(false);
   }
 
   function handleInputClick() {
@@ -115,12 +131,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
   return (
     <div ref={connect} className={cn(className, classNames)}>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {selectedTags.map((tagName, index) => (
+        {selectedTags.map((tag, index) => (
           <div key={index} style={tagsCss}>
-            {tagName}
+            {_get(tag, field as string)}
             <IoIosCloseCircle
-              onClick={() => remove(tagName)}
               className="inline-flex mx-2 cursor-pointer"
+              onClick={() => remove(index)}
             />
           </div>
         ))}
@@ -128,17 +144,18 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
       <div className="relative" ref={dropdownRef}>
         <input
           type="text"
-          placeholder="Type something"
+          className="border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+          placeholder="Enter a tag"
           onClick={handleInputClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          // disabled={tags.length >= 3}
+          disabled={selectedTags.length >= 3}
         />
         {showDropdown && (
           <div className="absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
             {filteredTags.map((tag, index) => (
               <div className="cursor-pointer" key={index} onClick={() => handleTagSelection(tag)}>
-                {tag[field as keyof typeof tag] as string}
+                {_get(tag, field as string)}
               </div>
             ))}
           </div>
