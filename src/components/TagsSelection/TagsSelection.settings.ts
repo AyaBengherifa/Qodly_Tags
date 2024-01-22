@@ -41,7 +41,13 @@ const Settings: TSetting[] = [
 
 export const BasicSettings: TSetting[] = [
   ...commonSettings,
-  ...load(BASIC_SETTINGS).filter('background', 'dimensions', 'style.textAlign', 'display'),
+  ...load(BASIC_SETTINGS).filter(
+    'dataAccess',
+    'background',
+    'dimensions',
+    'style.textAlign',
+    'display',
+  ),
 ];
 
 export default Settings;

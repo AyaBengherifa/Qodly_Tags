@@ -7,7 +7,7 @@ import TagsSelectionSettings, { BasicSettings } from './TagsSelection.settings';
 
 export default {
   craft: {
-    displayName: 'InputTags',
+    displayName: 'Select Tags',
     kind: EComponentKind.BASIC,
     props: {
       name: '',

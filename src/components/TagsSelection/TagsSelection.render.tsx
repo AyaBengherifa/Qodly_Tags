@@ -63,7 +63,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
 
     const value = e.currentTarget.value;
     const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    if (isDuplicate || !value.trim()) {
+    if (tags.length >= 3 || isDuplicate || !value.trim()) {
       return;
     }
     const focusedTag = tags.find((tag) => _get(tag, field) === value);
@@ -75,24 +75,6 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     }
     (e.target as any).value = '';
   }
-  const handleTagSelection = (selectedTag: any) => {
-    const isDuplicate = selectedTags.some(
-      (tag) => _get(tag, field as string) === _get(selectedTag, field as string),
-    );
-
-    if (!isDuplicate) {
-      const newSelectedTags = [...selectedTags, selectedTag];
-      setSelectedTags(newSelectedTags);
-
-      if (ds && ds.dataType === 'array') {
-        ds.setValue(null, newSelectedTags);
-      }
-    }
-
-    // Clear the input field and hide the dropdown
-    setInputValue('');
-    setShowDropdown(false);
-  };
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -110,6 +92,18 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
       ),
     );
   }, [tags, field, inputValue]);
+  function handleTagSelection(tag: any) {
+    const isDuplicate = selectedTags.some(
+      (selectedTag) => _get(selectedTag, field as string) === _get(tag, field as string),
+    );
+    if (!isDuplicate) {
+      const newTag = { ...tag };
+      setSelectedTags((prevTags) => [...prevTags, newTag]);
+    }
+    setInputValue('');
+    setShowDropdown(false);
+  }
+
   const remove = async (index: number) => {
     const Tags = [...tags];
     Tags.splice(index, 1);

@@ -56,7 +56,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
 
     const value = e.currentTarget.value;
     const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    if (/*tags.length >= 3 || */isDuplicate || !value.trim()) {
+    if (tags.length >= 3 || isDuplicate || !value.trim()) {
       return;
     }
     const newTag = {};
