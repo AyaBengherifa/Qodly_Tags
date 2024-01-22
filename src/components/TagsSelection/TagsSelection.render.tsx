@@ -70,11 +70,29 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     const selectedTag = focusedTag || { [field]: value };
     const newTags = [...selectedTags, selectedTag];
     setSelectedTags(newTags);
-    setInputValue('');
     if (ds && ds.dataType === 'array') {
       await ds.setValue(null, newTags);
     }
+    (e.target as any).value = '';
   }
+  const handleTagSelection = (selectedTag: any) => {
+    const isDuplicate = selectedTags.some(
+      (tag) => _get(tag, field as string) === _get(selectedTag, field as string),
+    );
+
+    if (!isDuplicate) {
+      const newSelectedTags = [...selectedTags, selectedTag];
+      setSelectedTags(newSelectedTags);
+
+      if (ds && ds.dataType === 'array') {
+        ds.setValue(null, newSelectedTags);
+      }
+    }
+
+    // Clear the input field and hide the dropdown
+    setInputValue('');
+    setShowDropdown(false);
+  };
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -92,20 +110,16 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
       ),
     );
   }, [tags, field, inputValue]);
-  function handleTagSelection(selectedTag: any) {
-    const newTags = [...selectedTags, selectedTag];
-    setSelectedTags(newTags);
-    setInputValue('');
+  const remove = async (index: number) => {
+    const Tags = [...tags];
+    Tags.splice(index, 1);
+
     if (ds && ds.dataType === 'array') {
-      ds.setValue(null, newTags);
+      await ds.setValue(null, Tags);
     }
 
-    setShowDropdown(false);
-  }
-
-  function remove(tagName: string) {
-    setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
-  }
+    setTags(Tags);
+  };
 
   function handleInputClick() {
     setShowDropdown(true);
@@ -130,7 +144,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
           <div key={index} style={tagsCss}>
             {_get(tag, field as string)}
             <IoIosCloseCircle
-              onClick={() => remove(tag)}
+              onClick={() => remove(index)}
               className="inline-flex mx-2 cursor-pointer"
             />
           </div>

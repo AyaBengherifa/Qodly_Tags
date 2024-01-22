@@ -56,7 +56,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
 
     const value = e.currentTarget.value;
     const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    if (tags.length >= 3 || isDuplicate || !value.trim()) {
+    if (/*tags.length >= 3 || */isDuplicate || !value.trim()) {
       return;
     }
     const newTag = {};
@@ -69,10 +69,16 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
 
     (e.target as any).value = '';
   }
-  function remove(index: number) {
-    setTags(tags.filter((_elem, i) => i !== index));
-    ds.setValue(null, tags);
-  }
+  const remove = async (index: number) => {
+    const Tags = [...tags];
+    Tags.splice(index, 1);
+
+    if (ds && ds.dataType === 'array') {
+      await ds.setValue(null, Tags);
+    }
+
+    setTags(Tags);
+  };
 
   return (
     <div ref={connect} className={cn(className, classNames)}>
@@ -80,8 +86,8 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
         <div style={tagsCss} key={index}>
           {_get(tag, field as string)}
           <IoIosCloseCircle
-            onClick={() => remove(index)}
             className="inline-flex mx-2 cursor-pointer"
+            onClick={() => remove(index)}
           />
         </div>
       ))}
