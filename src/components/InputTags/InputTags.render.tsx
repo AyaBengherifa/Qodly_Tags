@@ -95,7 +95,7 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
         onKeyDown={handleKeyDown}
         type="text"
         disabled={tags.length >= 3}
-        placeholder="Type something"
+        placeholder="Enter a tag"
       />
     </div>
   );

@@ -62,7 +62,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
           />
         </div>
       ))}
-      <input onKeyDown={handleKeyDown} type="text" placeholder="Type something" />
+      <input onKeyDown={handleKeyDown} type="text" placeholder="Enter a tag" />
     </div>
   );
 };

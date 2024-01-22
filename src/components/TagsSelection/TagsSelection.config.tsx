@@ -19,7 +19,7 @@ export default {
     },
   },
   info: {
-    displayName: 'InputTags',
+    displayName: 'Select Tags',
     exposed: true,
     icon: RiDropdownList,
     events: [

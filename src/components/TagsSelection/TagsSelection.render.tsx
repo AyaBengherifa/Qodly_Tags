@@ -81,6 +81,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     setInputValue(value);
     setShowDropdown(value !== '' && filteredTags.length > 0);
   }
+  function remove(index: number) {
+    const updatedTags = [...selectedTags];
+    updatedTags.splice(index, 1);
+    setSelectedTags(updatedTags);
+  }
+
   useMemo(() => {
     const lowerCaseValue = inputValue.toLowerCase();
     const limitedTags = tags.slice(0, 10);
@@ -103,17 +109,6 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     setInputValue('');
     setShowDropdown(false);
   }
-
-  const remove = async (index: number) => {
-    const Tags = [...tags];
-    Tags.splice(index, 1);
-
-    if (ds && ds.dataType === 'array') {
-      await ds.setValue(null, Tags);
-    }
-
-    setTags(Tags);
-  };
 
   function handleInputClick() {
     setShowDropdown(true);
@@ -138,8 +133,8 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
           <div key={index} style={tagsCss}>
             {_get(tag, field as string)}
             <IoIosCloseCircle
-              onClick={() => remove(index)}
               className="inline-flex mx-2 cursor-pointer"
+              onClick={() => remove(index)}
             />
           </div>
         ))}
@@ -147,11 +142,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
       <div className="relative" ref={dropdownRef}>
         <input
           type="text"
-          placeholder="Type something"
+          className="border-2 border-solid border-black rounded shadow"
+          placeholder="Enter a tag"
           onClick={handleInputClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          disabled={tags.length >= 3}
+          disabled={selectedTags.length >= 3}
         />
         {showDropdown && (
           <div className="absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
