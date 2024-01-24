@@ -23,9 +23,12 @@ Tags selector component provides a user-friendly way to manage and display tags,
 | ---------- | ----- | ---------------------------------------------------------------- |
 | Datasource | Array | Array that serves as the source of data for the Tags components. |
 
+```
 Example of the data that can be used :
 [{name: 'Tag1',},{name: 'Tag2',}]
 [{value:{"name": "Tag1",},{name: 'Tag2',}}]
+
+```
 
 ## Properties
 
