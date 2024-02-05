@@ -11,9 +11,12 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
 
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
-    padding: style?.padding || '6px 12px',
     backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
     color: style?.color || 'rgb(48, 48, 48)',
+    paddingRight: style?.paddingRight || '6px',
+    paddingLeft: style?.paddingLeft || '6px',
+    paddingBottom: style?.paddingBottom || '6px',
+    paddingTop: style?.paddingTop || '6px',
     marginRight: style?.marginRight || '2px',
     marginBottom: style?.marginBottom || '0px',
     marginLeft: style?.marginLeft || '0px',
@@ -24,9 +27,9 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     fontStyle: style?.fontStyle || 'normal',
     textDecorationLine: style?.textDecorationLine || 'none',
     textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || '',
-    borderWidth: style?.borderWidth || '0px',
-    borderStyle: style?.borderStyle || 'none',
+    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
+    borderWidth: style?.borderWidth || '2px',
+    borderStyle: style?.borderStyle || 'solid',
     borderRadius: style?.borderRadius || '12px',
     alignItems: 'center',
   };
@@ -63,7 +66,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
         </div>
       ))}
       <input
-        className="border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+        className=" text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
         onKeyDown={handleKeyDown}
         type="text"
         placeholder="Enter a tag"

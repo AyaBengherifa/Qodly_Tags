@@ -57,9 +57,15 @@ export default {
   },
   defaultProps: {
     field: '',
+    min: 0,
+    max: 0,
+    duplicate: false,
   },
 } as T4DComponentConfig<IInputTagsProps>;
 
 export interface IInputTagsProps extends webforms.ComponentProps {
   field?: string;
+  min: number;
+  max: number;
+  duplicate: boolean;
 }

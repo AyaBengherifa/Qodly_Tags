@@ -5,16 +5,19 @@ import { CSSProperties, FC, useEffect, useState } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { IInputTagsProps } from './InputTags.config';
 
-const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = [] }) => {
+const InputTags: FC<IInputTagsProps> = ({ duplicate, max, style, className, classNames = [] }) => {
   const { connect } = useRenderer();
 
   const [tags, setTags] = useState<any[]>(() => []);
 
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
-    padding: style?.padding || '6px 12px',
     backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
     color: style?.color || 'rgb(48, 48, 48)',
+    paddingRight: style?.paddingRight || '6px',
+    paddingLeft: style?.paddingLeft || '6px',
+    paddingBottom: style?.paddingBottom || '6px',
+    paddingTop: style?.paddingTop || '6px',
     marginRight: style?.marginRight || '2px',
     marginBottom: style?.marginBottom || '0px',
     marginLeft: style?.marginLeft || '0px',
@@ -25,9 +28,9 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     fontStyle: style?.fontStyle || 'normal',
     textDecorationLine: style?.textDecorationLine || 'none',
     textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || '',
-    borderWidth: style?.borderWidth || '0px',
-    borderStyle: style?.borderStyle || 'none',
+    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
+    borderWidth: style?.borderWidth || '2px',
+    borderStyle: style?.borderStyle || 'solid',
     borderRadius: style?.borderRadius || '12px',
     alignItems: 'center',
   };
@@ -51,24 +54,44 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     return () => ds.removeListener('changed', fetchData);
   }, [ds]);
 
-  async function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Enter' || !field) return;
-
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'Enter') return;
     const value = e.currentTarget.value;
-    const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    if (tags.length >= 3 || isDuplicate || !value.trim()) {
-      return;
+    if (!duplicate) {
+      const isDuplicate = tags.some((tag) => tag === value);
+      if (isDuplicate || tags.length >= max || !value.trim()) {
+        return;
+      }
+    } else {
+      if (tags.length >= max || !value.trim()) {
+        return;
+      }
     }
-    const newTag = {};
-    _set(newTag, field, value);
+    setTags((prevTag) => [...prevTag, value]);
+    // if (e.key !== 'Enter' || !field) return;
+    // const value = e.currentTarget.value;
+    // if (!duplicate) {
+    //   const isDuplicate = tags.some((tag) => _get(tag, field) === value);
+    //   if (isDuplicate || tags.length >= max || !value.trim()) {
+    //     return;
+    //   }
+    // } else {
+    //   if (tags.length >= max || !value.trim()) {
+    //     return;
+    //   }
+    // }
+    // const newTag = {};
+    // _set(newTag, field, value);
     // await ds.setValue(null, newTag[field as keyof typeof newTag], true);
-    const newTags = [...tags, newTag];
-    if (ds && ds.dataType === 'array') {
-      await ds.setValue(null, newTags);
-    }
-
+    // const newTags = [...tags, newTag];
+    // if (ds && ds.dataType === 'array') {
+    //   await ds.setValue(null, newTags);
+    // }
+    const newTags = [...tags, value];
+    ds.setValue(null, newTags);
     (e.target as any).value = '';
   }
+
   const remove = async (index: number) => {
     const Tags = [...tags];
     Tags.splice(index, 1);
@@ -84,18 +107,18 @@ const InputTags: FC<IInputTagsProps> = ({ field, style, className, classNames = 
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((tag, index) => (
         <div style={tagsCss} key={index}>
-          {_get(tag, field as string)}
+          {tag}
           <IoIosCloseCircle
-            className="inline-flex mx-2 cursor-pointer"
+            className="inline-flex mx-2 cursor-pointer close-icon"
             onClick={() => remove(index)}
           />
         </div>
       ))}
       <input
         onKeyDown={handleKeyDown}
-        className="border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+        className="text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
         type="text"
-        disabled={tags.length >= 3}
+        disabled={tags.length >= max}
         placeholder="Enter a tag"
       />
     </div>

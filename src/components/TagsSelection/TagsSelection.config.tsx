@@ -58,9 +58,15 @@ export default {
   },
   defaultProps: {
     field: '',
+    min: 0,
+    max: 0,
+    duplicate: true,
   },
 } as T4DComponentConfig<ITagsSelectionProps>;
 
 export interface ITagsSelectionProps extends webforms.ComponentProps {
   field?: string;
+  min: number;
+  max: number;
+  duplicate: boolean;
 }
