@@ -51,51 +51,53 @@ Example of the data that can be used :
 ## Custom CSS
 
 When customizing the appearance of the tags, you have access to the following classes within the component:
-![tags selectorCss](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tag-selectorCss.png)
+![tags selectorcss](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tag-selectorcss.png)
 
-```
 self {
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* custom styles for the icon  */
+/_ custom styles for the icon _/
 self .tag-close {
-  cursor: pointer;
-  margin-left: 4px;
+cursor: pointer;
+margin-left: 4px;
 }
 
-/* custom styles for the text input  */
+/_ custom styles for the text input _/
 self .text-input {
-  width: 30%;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  margin-left: 2px;
+width: 30%;
+box-sizing: border-box;
+border: 2px solid #ccc;
+border-radius: 4px;
+padding: 8px;
+margin-left: 2px;
 }
-/* custom styles for the dropdown  */
+/_ custom styles for the dropdown _/
 self .dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1;
-  background-color: #f9f9f9;
-  border: 1px solid #999;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  max-height: 200px;
-  overflow-y: auto;
-  padding: 8px;
+position: absolute;
+top: 100%;
+left: 0;
+z-index: 1;
+background-color: #f9f9f9;
+border: 1px solid #999;
+border-radius: 4px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+max-height: 200px;
+overflow-y: auto;
+padding: 8px;
 }
-/* custom styles for the items in the dropdown  */
+/_ custom styles for the items in the dropdown _/
 
 self .dropdown-item {
-	width:100%
-  cursor: pointer;
-  padding: 8px;
+width:100%
+cursor: pointer;
+padding: 8px;
 }
-/* custom styles for the items in the dropdown  on hover*/
+/_ custom styles for the items in the dropdown on hover_/
 self .dropdown-item:hover {
-  background-color: #ddd;
+background-color: #ddd;
 }
+
+```
+
 ```
