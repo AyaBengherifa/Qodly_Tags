@@ -51,8 +51,9 @@ Example of the data that can be used :
 ## Custom CSS
 
 When customizing the appearance of the tags, you have access to the following classes within the component:
-![tags selectorcss](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tag-selectorCss.png)
+![tags selectorcss](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tag-selectorcss.png)
 
+```
 self {
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
@@ -97,7 +98,4 @@ padding: 8px;
 self .dropdown-item:hover {
 background-color: #ddd;
 }
-
-```
-
 ```
