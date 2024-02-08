@@ -1,6 +1,6 @@
 import { EComponentKind, T4DComponentConfig } from '@ws-ui/webform-editor';
 import { Settings } from '@ws-ui/webform-editor';
-import { CiViewList  } from 'react-icons/ci';
+import { CiViewList } from 'react-icons/ci';
 
 import TagsSettings, { BasicSettings } from './Tags.settings';
 
@@ -20,7 +20,7 @@ export default {
   info: {
     displayName: 'Tags',
     exposed: true,
-    icon: CiViewList ,
+    icon: CiViewList,
     events: [
       {
         label: 'On Click',
@@ -44,7 +44,7 @@ export default {
       },
     ],
     datasources: {
-      accept: ['string'],
+      accept: ['entitysel'],
     },
   },
   defaultProps: {

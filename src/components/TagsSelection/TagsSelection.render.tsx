@@ -6,11 +6,16 @@ import { FC, useEffect, useState, CSSProperties, useRef, useMemo } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { ITagsSelectionProps } from './TagsSelection.config';
 
-const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, classNames = [] }) => {
+const TagsSelection: FC<ITagsSelectionProps> = ({
+  duplicate,
+  max,
+  style,
+  className,
+  classNames = [],
+}) => {
   const { connect } = useRenderer();
   const [tags, setTags] = useState<any[]>(() => []);
   const [inputValue, setInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState<any[]>(() => []);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [filteredTags, setFilteredTags] = useState<any[]>([]);
@@ -20,9 +25,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
   }, [tags]);
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
-    padding: style?.padding || '6px 12px',
     backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
     color: style?.color || 'rgb(48, 48, 48)',
+    paddingRight: style?.paddingRight || '6px',
+    paddingLeft: style?.paddingLeft || '6px',
+    paddingBottom: style?.paddingBottom || '6px',
+    paddingTop: style?.paddingTop || '6px',
     marginRight: style?.marginRight || '2px',
     marginBottom: style?.marginBottom || '0px',
     marginLeft: style?.marginLeft || '0px',
@@ -33,9 +41,9 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     fontStyle: style?.fontStyle || 'normal',
     textDecorationLine: style?.textDecorationLine || 'none',
     textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || '',
-    borderWidth: style?.borderWidth || '0px',
-    borderStyle: style?.borderStyle || 'none',
+    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
+    borderWidth: style?.borderWidth || '2px',
+    borderStyle: style?.borderStyle || 'solid',
     borderRadius: style?.borderRadius || '12px',
     alignItems: 'center',
   };
@@ -58,23 +66,38 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     return () => ds.removeListener('changed', fetchData);
   }, [ds]);
 
-  async function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Enter' || !field) return;
-
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'Enter') return;
     const value = e.currentTarget.value;
-    const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    if (isDuplicate || !value.trim()) {
-      return;
+    if (!duplicate) {
+      const isDuplicate = tags.some((tag) => tag === value);
+      if (isDuplicate || tags.length >= max || !value.trim()) {
+        return;
+      }
+    } else {
+      if (tags.length >= max || !value.trim()) {
+        return;
+      }
     }
-    const focusedTag = tags.find((tag) => _get(tag, field) === value);
-    const selectedTag = focusedTag || { [field]: value };
-    const newTags = [...tags, selectedTag];
-    setTags(newTags);
-    setSelectedTags([...selectedTags, selectedTag]);
+    setTags((prevTag) => [...prevTag, value]);
+    const newTags = [...tags, value];
+    ds.setValue(null, newTags);
+    // if (e.key !== 'Enter' || !field) return;
+    // const value = e.currentTarget.value;
 
-    if (ds && ds.dataType === 'array') {
-      await ds.setValue(null, newTags);
-    }
+    // const isDuplicate = tags.some((tag) => _get(tag, field) === value);
+    // if (isDuplicate || !value.trim()) {
+    //   return;
+    // }
+    // const focusedTag = tags.find((tag) => _get(tag, field) === value);
+    // const selectedTag = focusedTag || { [field]: value };
+    // const newTags = [...tags, selectedTag];
+    // setTags(newTags);
+    // setSelectedTags([...selectedTags, selectedTag]);
+
+    // if (ds && ds.dataType === 'array') {
+    //   await ds.setValue(null, newTags);
+    // }
     (e.target as any).value = '';
   }
 
@@ -84,36 +107,43 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
     setShowDropdown(value !== '' && filteredTags.length > 0);
   }
   function remove(index: number) {
-    const updatedTags = [...selectedTags];
+    const updatedTags = [...tags];
     updatedTags.splice(index, 1);
-    setSelectedTags(updatedTags);
+    if (ds && ds.dataType === 'array') {
+      ds.setValue(null, updatedTags);
+    }
+    setTags(updatedTags);
   }
 
   useMemo(() => {
     const lowerCaseValue = inputValue.toLowerCase();
     const limitedTags = tags.slice(0, 10);
-    setFilteredTags(
-      limitedTags.filter((tag) =>
-        _get(tag, field as string)
-          .toLowerCase()
-          .includes(lowerCaseValue),
-      ),
-    );
-  }, [tags, field, inputValue]);
-  function handleTagSelection(tag: any) {
-    const isDuplicate = selectedTags.some(
-      (selectedTag) => _get(selectedTag, field as string) === _get(tag, field as string),
-    );
-    if (!isDuplicate) {
-      const newTag = { ...tag };
-      setSelectedTags((prevTags) => [...prevTags, newTag]);
-    }
-    setInputValue('');
-    setShowDropdown(false);
-  }
+    setFilteredTags(limitedTags.filter((tag) => tag.toLowerCase().includes(lowerCaseValue)));
+  }, [tags, inputValue]);
 
   function handleInputClick() {
     setShowDropdown(true);
+  }
+  function handleTagSelection(selectedTag: string) {
+    if (!duplicate) {
+      const isDuplicate = tags.some((tag) => tag === selectedTag);
+      if (isDuplicate || tags.length >= max || !selectedTag.trim()) {
+        return;
+      }
+    } else {
+      if (tags.length >= max || !selectedTag.trim()) {
+        return;
+      }
+    }
+
+    const newTags = [...tags, selectedTag];
+
+    
+      ds.setValue(null, newTags);
+
+    setTags(newTags);
+    setInputValue('');
+    setShowDropdown(false);
   }
 
   useEffect(() => {
@@ -130,12 +160,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
 
   return (
     <div ref={connect} className={cn(className, classNames)}>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {selectedTags.map((tag, index) => (
+      <div className="flex flex-wrap">
+        {tags.map((tag, index) => (
           <div key={index} style={tagsCss}>
-            {_get(tag, field as string)}
+            {tag}
             <IoIosCloseCircle
-              className="inline-flex mx-2 cursor-pointer"
+              className="inline-flex mx-2 cursor-pointer tag-close"
               onClick={() => remove(index)}
             />
           </div>
@@ -144,18 +174,22 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ field, style, className, class
       <div className="relative" ref={dropdownRef}>
         <input
           type="text"
-          className="border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+          className="text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
           placeholder="Enter a tag"
           onClick={handleInputClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          disabled={selectedTags.length >= 3}
+          disabled={tags.length >= max}
         />
         {showDropdown && (
-          <div className="absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
+          <div className=" dropdown absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
             {filteredTags.map((tag, index) => (
-              <div className="cursor-pointer" key={index} onClick={() => handleTagSelection(tag)}>
-                {_get(tag, field as string)}
+              <div
+                className="dropdown-item cursor-pointer"
+                key={index}
+                onClick={() => handleTagSelection(tag)}
+              >
+                {tag}
               </div>
             ))}
           </div>

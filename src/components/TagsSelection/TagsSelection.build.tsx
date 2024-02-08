@@ -24,9 +24,12 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
   ]);
   const tagsCss: CSSProperties = {
     display: style?.display || 'inline-block',
-    padding: style?.padding || '6px 12px',
     backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
     color: style?.color || 'rgb(48, 48, 48)',
+    paddingRight: style?.paddingRight || '6px',
+    paddingLeft: style?.paddingLeft || '6px',
+    paddingBottom: style?.paddingBottom || '6px',
+    paddingTop: style?.paddingTop || '6px',
     marginRight: style?.marginRight || '2px',
     marginBottom: style?.marginBottom || '0px',
     marginLeft: style?.marginLeft || '0px',
@@ -37,9 +40,9 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
     fontStyle: style?.fontStyle || 'normal',
     textDecorationLine: style?.textDecorationLine || 'none',
     textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || '',
-    borderWidth: style?.borderWidth || '0px',
-    borderStyle: style?.borderStyle || 'none',
+    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
+    borderWidth: style?.borderWidth || '2px',
+    borderStyle: style?.borderStyle || 'solid',
     borderRadius: style?.borderRadius || '12px',
     alignItems: 'center',
   };
@@ -98,7 +101,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
       <div className="relative" ref={dropdownRef}>
         <input
           type="text"
-          className="border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+          className=" text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
           placeholder="Enter a tag"
           value={selectedTag}
           onClick={handleInputClick}
@@ -106,10 +109,10 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           onKeyDown={handleKeyDown}
         />
         {showDropdown && (
-          <div className="absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
+          <div className=" dropDown absolute px-4 py-2 left-0 z-1 bg-zinc-50 border-1 border-solid border-zinc-900 rounded shadow">
             {filteredTags.map((tag, index) => (
               <div
-                className="cursor-pointer"
+                className="dropDown-item cursor-pointer"
                 key={index}
                 onClick={() => handleTagSelection(tag.name)}
               >

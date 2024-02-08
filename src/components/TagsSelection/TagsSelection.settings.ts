@@ -3,6 +3,24 @@ import { BASIC_SETTINGS, DEFAULT_SETTINGS, load } from '@ws-ui/webform-editor';
 
 const commonSettings: TSetting[] = [
   {
+    key: 'duplicate',
+    label: 'Duplicated',
+    type: ESetting.CHECKBOX,
+    defaultValue: true,
+  },
+  {
+    key: 'min',
+    label: 'Min',
+    type: ESetting.NUMBER_FIELD,
+    defaultValue: 0,
+  },
+  {
+    key: 'max',
+    label: 'Max',
+    type: ESetting.NUMBER_FIELD,
+    defaultValue: 0,
+  },
+  {
     key: 'dataAccess',
     label: 'Data Access',
     type: ESetting.GROUP,
