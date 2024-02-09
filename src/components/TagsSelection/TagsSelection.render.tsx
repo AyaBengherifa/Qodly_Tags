@@ -82,22 +82,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({
     setTags((prevTag) => [...prevTag, value]);
     const newTags = [...tags, value];
     ds.setValue(null, newTags);
-    // if (e.key !== 'Enter' || !field) return;
-    // const value = e.currentTarget.value;
 
-    // const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    // if (isDuplicate || !value.trim()) {
-    //   return;
-    // }
-    // const focusedTag = tags.find((tag) => _get(tag, field) === value);
-    // const selectedTag = focusedTag || { [field]: value };
-    // const newTags = [...tags, selectedTag];
-    // setTags(newTags);
-    // setSelectedTags([...selectedTags, selectedTag]);
-
-    // if (ds && ds.dataType === 'array') {
-    //   await ds.setValue(null, newTags);
-    // }
     (e.target as any).value = '';
   }
 
@@ -138,8 +123,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({
 
     const newTags = [...tags, selectedTag];
 
-    
-      ds.setValue(null, newTags);
+    ds.setValue(null, newTags);
 
     setTags(newTags);
     setInputValue('');
