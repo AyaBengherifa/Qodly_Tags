@@ -68,25 +68,7 @@ const InputTags: FC<IInputTagsProps> = ({ duplicate, max, style, className, clas
       }
     }
     setTags((prevTag) => [...prevTag, value]);
-    // if (e.key !== 'Enter' || !field) return;
-    // const value = e.currentTarget.value;
-    // if (!duplicate) {
-    //   const isDuplicate = tags.some((tag) => _get(tag, field) === value);
-    //   if (isDuplicate || tags.length >= max || !value.trim()) {
-    //     return;
-    //   }
-    // } else {
-    //   if (tags.length >= max || !value.trim()) {
-    //     return;
-    //   }
-    // }
-    // const newTag = {};
-    // _set(newTag, field, value);
-    // await ds.setValue(null, newTag[field as keyof typeof newTag], true);
-    // const newTags = [...tags, newTag];
-    // if (ds && ds.dataType === 'array') {
-    //   await ds.setValue(null, newTags);
-    // }
+
     const newTags = [...tags, value];
     ds.setValue(null, newTags);
     (e.target as any).value = '';
