@@ -5,7 +5,7 @@ Tags component for Qodly studio
 ## Tags
 
 Customizable component for neatly displaying tags in a visually organized format.
-![tags](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tags.png)
+![tags](public/tags-min.png)
 
 ## DataSource
 
@@ -22,12 +22,12 @@ Customizable component for neatly displaying tags in a visually organized format
 ## Tags input
 
 Customizable input tags component to display tags in a neatformat allowing addition of new tags through an input.
-![tags input](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tags-input.png)
+![tags input](public/tags-input-min.png)
 
 ## Select Tags input
 
 Tags selector component provides a user-friendly way to manage and display tags, allowing users to input new tags, remove existing ones, and select from a dropdown of available tags.
-![tags selector](https://github.com/AyaBengherifa/Qodly_Tags/blob/main/public/tag-selector.png)
+![tags selector](public/tag-selector-min.png)
 
 ## DataSource
 
@@ -51,7 +51,7 @@ Example of the data that can be used :
 ## Custom CSS
 
 When customizing the appearance of the tags, you have access to the following classes within the component:
-![tags selectorcss](public/tag-selectorCss.png)
+![tags selectorcss](public/tag-selectorcss-min.png)
 
 ```css
 self {
