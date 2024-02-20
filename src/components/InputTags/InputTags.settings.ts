@@ -8,12 +8,7 @@ const commonSettings: TSetting[] = [
     type: ESetting.CHECKBOX,
     defaultValue: true,
   },
-  {
-    key: 'min',
-    label: 'Min',
-    type: ESetting.NUMBER_FIELD,
-    defaultValue: 0,
-  },
+
   {
     key: 'max',
     label: 'Max',
