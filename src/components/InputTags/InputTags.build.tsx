@@ -61,12 +61,12 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex mx-2 cursor-pointer"
+            className="inline-flex mx-2 cursor-pointer close-icon"
           />
         </div>
       ))}
       <input
-        className=" text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+        className=" text-input  pl-2 border border-solid border-inherit	w-full "
         onKeyDown={handleKeyDown}
         type="text"
         placeholder="Enter a tag"

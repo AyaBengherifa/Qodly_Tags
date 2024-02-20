@@ -9,12 +9,6 @@ const commonSettings: TSetting[] = [
     defaultValue: true,
   },
   {
-    key: 'min',
-    label: 'Min',
-    type: ESetting.NUMBER_FIELD,
-    defaultValue: 0,
-  },
-  {
     key: 'max',
     label: 'Max',
     type: ESetting.NUMBER_FIELD,

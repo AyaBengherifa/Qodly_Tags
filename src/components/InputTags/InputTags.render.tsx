@@ -98,7 +98,7 @@ const InputTags: FC<IInputTagsProps> = ({ duplicate, max, style, className, clas
       ))}
       <input
         onKeyDown={handleKeyDown}
-        className="text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+        className=" text-input ml-2 pl-2 border border-solid border-inherit	w-full "
         type="text"
         disabled={tags.length >= max}
         placeholder="Enter a tag"

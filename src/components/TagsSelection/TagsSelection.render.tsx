@@ -158,7 +158,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({
       <div className="relative" ref={dropdownRef}>
         <input
           type="text"
-          className="text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+          className=" text-input pl-2 border border-solid border-inherit	w-full "
           placeholder="Enter a tag"
           onClick={handleInputClick}
           onChange={handleInputChange}

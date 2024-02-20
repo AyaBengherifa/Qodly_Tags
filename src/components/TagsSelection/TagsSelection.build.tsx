@@ -30,9 +30,9 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
     paddingLeft: style?.paddingLeft || '6px',
     paddingBottom: style?.paddingBottom || '6px',
     paddingTop: style?.paddingTop || '6px',
-    marginRight: style?.marginRight || '2px',
-    marginBottom: style?.marginBottom || '0px',
-    marginLeft: style?.marginLeft || '0px',
+    marginRight: style?.marginRight || '0px',
+    marginBottom: style?.marginBottom || '10px',
+    marginLeft: style?.marginLeft || '5px',
     marginTop: style?.marginTop || '0px',
     fontFamily: style?.fontFamily || 'inherit',
     fontWeight: style?.fontWeight || 400,
@@ -93,7 +93,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
-            className="inline-flex ml-2 cursor-pointer"
+            className="inline-flex ml-2 cursor-pointer tag-close"
           />
         </div>
       ))}
@@ -101,7 +101,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
       <div className="relative" ref={dropdownRef}>
         <input
           type="text"
-          className=" text-input border-2 ml-2 pl-2 border-solid border-neutral-500 rounded shadow"
+          className="text-input  pl-2 border border-solid border-inherit w-full"
           placeholder="Enter a tag"
           value={selectedTag}
           onClick={handleInputClick}

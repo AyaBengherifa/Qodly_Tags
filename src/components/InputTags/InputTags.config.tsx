@@ -57,7 +57,6 @@ export default {
   },
   defaultProps: {
     field: '',
-    min: 0,
     max: 0,
     duplicate: false,
   },
@@ -65,7 +64,6 @@ export default {
 
 export interface IInputTagsProps extends webforms.ComponentProps {
   field?: string;
-  min: number;
   max: number;
   duplicate: boolean;
 }
