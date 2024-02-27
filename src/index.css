@@ -1,4 +1,4 @@
-@import '@ws-ui/webform-editor-standalone/dist/style.css';
+@import '@ws-ui/webform-editor/dist/style.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
