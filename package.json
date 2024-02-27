@@ -16,26 +16,23 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,jsx,html,css}\""
   },
-  "overrides": {
-    "@ws-ui/webform-editor-standalone": {
-      "@ws-ui/webform-editor": "$@ws-ui/webform-editor"
-    }
-  },
   "dependencies": {
-    "@ws-ui/webform-editor": "^0.0.56",
+    "@ws-ui/craftjs-core": "^0.2.1-beta.3",
+    "@ws-ui/craftjs-layers": "^0.2.1-beta.3",
+    "@ws-ui/craftjs-utils": "^0.2.1-beta.3",
+    "@ws-ui/webform-editor": "0.1.13",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@qodly/cli": "^0.1.12",
+    "@qodly/cli": "^0.1.26",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@types/react-select": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "@ws-ui/webform-editor-standalone": "^0.0.8",
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
