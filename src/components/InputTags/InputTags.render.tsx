@@ -1,7 +1,6 @@
 import { useRenderer, useSources } from '@ws-ui/webform-editor';
-import { get as _get, set as _set } from 'lodash';
 import cn from 'classnames';
-import { CSSProperties, FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { IInputTagsProps } from './InputTags.config';
 
@@ -9,31 +8,6 @@ const InputTags: FC<IInputTagsProps> = ({ duplicate, max, style, className, clas
   const { connect } = useRenderer();
 
   const [tags, setTags] = useState<any[]>(() => []);
-
-  const tagsCss: CSSProperties = {
-    display: style?.display || 'inline-block',
-    backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
-    color: style?.color || 'rgb(48, 48, 48)',
-    paddingRight: style?.paddingRight || '6px',
-    paddingLeft: style?.paddingLeft || '6px',
-    paddingBottom: style?.paddingBottom || '6px',
-    paddingTop: style?.paddingTop || '6px',
-    marginRight: style?.marginRight || '2px',
-    marginBottom: style?.marginBottom || '0px',
-    marginLeft: style?.marginLeft || '0px',
-    marginTop: style?.marginTop || '0px',
-    fontFamily: style?.fontFamily || 'inherit',
-    fontWeight: style?.fontWeight || 400,
-    fontSize: style?.fontSize || '14px',
-    fontStyle: style?.fontStyle || 'normal',
-    textDecorationLine: style?.textDecorationLine || 'none',
-    textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
-    borderWidth: style?.borderWidth || '2px',
-    borderStyle: style?.borderStyle || 'solid',
-    borderRadius: style?.borderRadius || '12px',
-    alignItems: 'center',
-  };
 
   const {
     sources: { datasource: ds },
@@ -88,7 +62,7 @@ const InputTags: FC<IInputTagsProps> = ({ duplicate, max, style, className, clas
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((tag, index) => (
-        <div style={tagsCss} key={index}>
+        <div style={style} key={index}>
           {tag}
           <IoIosCloseCircle
             className="inline-flex mx-2 cursor-pointer close-icon"

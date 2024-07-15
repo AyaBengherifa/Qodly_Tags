@@ -1,8 +1,7 @@
 import { useRenderer, useSources } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { get as _get, set as _set } from 'lodash';
 
-import { FC, useEffect, useState, CSSProperties, useRef, useMemo } from 'react';
+import { FC, useEffect, useState, useRef, useMemo } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { ITagsSelectionProps } from './TagsSelection.config';
 
@@ -23,30 +22,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({
   useEffect(() => {
     setFilteredTags(tags);
   }, [tags]);
-  const tagsCss: CSSProperties = {
-    display: style?.display || 'inline-block',
-    backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
-    color: style?.color || 'rgb(48, 48, 48)',
-    paddingRight: style?.paddingRight || '6px',
-    paddingLeft: style?.paddingLeft || '6px',
-    paddingBottom: style?.paddingBottom || '6px',
-    paddingTop: style?.paddingTop || '6px',
-    marginRight: style?.marginRight || '2px',
-    marginBottom: style?.marginBottom || '0px',
-    marginLeft: style?.marginLeft || '0px',
-    marginTop: style?.marginTop || '0px',
-    fontFamily: style?.fontFamily || 'inherit',
-    fontWeight: style?.fontWeight || 400,
-    fontSize: style?.fontSize || '14px',
-    fontStyle: style?.fontStyle || 'normal',
-    textDecorationLine: style?.textDecorationLine || 'none',
-    textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
-    borderWidth: style?.borderWidth || '2px',
-    borderStyle: style?.borderStyle || 'solid',
-    borderRadius: style?.borderRadius || '12px',
-    alignItems: 'center',
-  };
+
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -146,7 +122,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({
     <div ref={connect} className={cn(className, classNames)}>
       <div className="flex flex-wrap">
         {tags.map((tag, index) => (
-          <div key={index} style={tagsCss}>
+          <div key={index} style={style}>
             {tag}
             <IoIosCloseCircle
               className="inline-flex mx-2 cursor-pointer tag-close"

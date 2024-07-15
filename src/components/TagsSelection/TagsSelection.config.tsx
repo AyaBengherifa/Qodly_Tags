@@ -1,7 +1,6 @@
 import { EComponentKind, T4DComponentConfig } from '@ws-ui/webform-editor';
 import { Settings } from '@ws-ui/webform-editor';
 import { RiDropdownList } from 'react-icons/ri';
-import { get as _get, set as _set } from 'lodash';
 
 import TagsSelectionSettings, { BasicSettings } from './TagsSelection.settings';
 
@@ -60,6 +59,30 @@ export default {
     field: '',
     max: 0,
     duplicate: true,
+    style: {
+      display: 'inline-block',
+      backgroundColor: 'rgb(218, 216, 216)',
+      color: 'rgb(48, 48, 48)',
+      paddingRight: '6px',
+      paddingLeft: '6px',
+      paddingBottom: '6px',
+      paddingTop: '6px',
+      marginRight: '2px',
+      marginBottom: '0px',
+      marginLeft: '0px',
+      marginTop: '0px',
+      fontFamily: 'inherit',
+      fontWeight: 400,
+      fontSize: '14px',
+      fontStyle: 'normal',
+      textDecorationLine: 'none',
+      textTransform: 'none',
+      borderColor: 'rgb(218, 216, 216)',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderRadius: '12px',
+      alignItems: 'center',
+    },
   },
 } as T4DComponentConfig<ITagsSelectionProps>;
 
