@@ -21,6 +21,8 @@ const Tags: FC<ITagsProps> = ({ style, className, classNames = [] }) => {
       name: 'Tag3',
     },
   ];
+  console.log(style);
+
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {Tags.map((Tag, index) => (

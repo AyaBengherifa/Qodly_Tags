@@ -1,5 +1,4 @@
 import { useRenderer, useSources } from '@ws-ui/webform-editor';
-import { get as _get, set as _set } from 'lodash';
 import cn from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';

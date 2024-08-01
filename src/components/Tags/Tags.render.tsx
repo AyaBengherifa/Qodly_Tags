@@ -7,7 +7,7 @@ import { ITagsProps } from './Tags.config';
 const Tags: FC<ITagsProps> = ({ field, style, className, classNames = [] }) => {
 
   const { connect } = useRenderer();
-  const [tags, setTags] = useState<datasources.IEntity[]>(() => []);
+  const [tags, setTags] = useState<datasources.IEntity[]>([]);
   const {
     sources: { datasource: ds },
   } = useSources();
@@ -30,6 +30,20 @@ const Tags: FC<ITagsProps> = ({ field, style, className, classNames = [] }) => {
 
     loader.sourceHasChanged().then(updateFromLoader);
   }, []);
+
+  useEffect(() => {
+    if (!loader || !ds) {
+      return;
+    }
+
+    const dsListener = () => {
+      loader.sourceHasChanged().then(updateFromLoader);
+    };
+    ds.addListener('changed', dsListener);
+    return () => {
+      ds.removeListener('changed', dsListener);
+    };
+  }, [ds, loader]);
 
   return (
     <div ref={connect} className={cn(className, classNames)}>
