@@ -1,6 +1,6 @@
 import { useEnhancedNode } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { FC, useState, CSSProperties, useEffect, useRef } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { ITagsSelectionProps } from './TagsSelection.config';
 
@@ -22,30 +22,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
       name: 'Tag3',
     },
   ]);
-  const tagsCss: CSSProperties = {
-    display: style?.display || 'inline-block',
-    backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
-    color: style?.color || 'rgb(48, 48, 48)',
-    paddingRight: style?.paddingRight || '6px',
-    paddingLeft: style?.paddingLeft || '6px',
-    paddingBottom: style?.paddingBottom || '6px',
-    paddingTop: style?.paddingTop || '6px',
-    marginRight: style?.marginRight || '0px',
-    marginBottom: style?.marginBottom || '10px',
-    marginLeft: style?.marginLeft || '5px',
-    marginTop: style?.marginTop || '0px',
-    fontFamily: style?.fontFamily || 'inherit',
-    fontWeight: style?.fontWeight || 400,
-    fontSize: style?.fontSize || '14px',
-    fontStyle: style?.fontStyle || 'normal',
-    textDecorationLine: style?.textDecorationLine || 'none',
-    textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
-    borderWidth: style?.borderWidth || '2px',
-    borderStyle: style?.borderStyle || 'solid',
-    borderRadius: style?.borderRadius || '12px',
-    alignItems: 'center',
-  };
+  
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key !== 'Enter') return;
     const value = e.currentTarget.value;
@@ -89,7 +66,7 @@ const TagsSelection: FC<ITagsSelectionProps> = ({ style, className, classNames =
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((Tag, index) => (
-        <div style={tagsCss} key={index}>
+        <div style={style} key={index}>
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
