@@ -1,4 +1,9 @@
-import { EComponentKind, T4DComponentConfig } from '@ws-ui/webform-editor';
+import {
+  EComponentKind,
+  T4DComponentConfig,
+  T4DComponentDatasourceDeclaration,
+  splitDatasourceID,
+} from '@ws-ui/webform-editor';
 import { Settings } from '@ws-ui/webform-editor';
 import { CiViewList } from 'react-icons/ci';
 
@@ -44,6 +49,26 @@ export default {
       },
     ],
     datasources: {
+      declarations: (props: ITagsProps) => {
+        const { field, datasource = '' } = props;
+        const declarations: T4DComponentDatasourceDeclaration[] = [
+          { path: datasource, iterable: true },
+        ];
+        if (field) {
+          const { id: ds, namespace } = splitDatasourceID(datasource?.trim()) || {};
+
+          if (!ds) {
+            return;
+          }
+          const fieldSrc = `${ds}.[].${field}`;
+          console.log(field);
+          declarations.push({
+            path: namespace ? `${namespace}:${fieldSrc}` : fieldSrc,
+          });
+        }
+
+        return declarations;
+      },
       accept: ['entitysel'],
     },
   },

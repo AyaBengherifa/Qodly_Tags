@@ -9,6 +9,8 @@ const InputTags: FC<IInputTagsProps> = ({ duplicate, max, style, className, clas
 
   const [tags, setTags] = useState<any[]>(() => []);
 
+  
+
   const {
     sources: { datasource: ds },
   } = useSources();

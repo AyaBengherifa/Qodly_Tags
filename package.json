@@ -18,25 +18,23 @@
   },
   "overrides": {
     "@ws-ui/webform-editor": {
-      "@ws-ui/code-editor": "0.1.21",
-      "@ws-ui/craftjs-core": "0.2.5",
-      "@ws-ui/craftjs-layers": "0.2.2",
-      "@ws-ui/craftjs-utils": "0.2.1",
-      "@ws-ui/icons": "0.0.16",
-      "@ws-ui/shared": "0.1.21",
-      "@ws-ui/store": "0.1.26"
+      "@ws-ui/code-editor": "0.2.0",
+      "@ws-ui/craftjs-core": "0.2.9",
+      "@ws-ui/craftjs-layers": "0.2.4",
+      "@ws-ui/craftjs-utils": "0.2.2",
+      "@ws-ui/icons": "0.0.20",
+      "@ws-ui/shared": "0.2.0",
+      "@ws-ui/store": "0.2.1"
     }
   },
   "dependencies": {
-    "@ws-ui/craftjs-core": "0.2.5",
-    "@ws-ui/craftjs-layers": "^0.2.2",
-    "@ws-ui/craftjs-utils": "^0.2.1",
-    "@ws-ui/webform-editor": "0.2.13",
+    "@ws-ui/webform-editor": "0.3.7",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@qodly/cli": "^0.1.44",
+    "@qodly/cli": "^0.2.8",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

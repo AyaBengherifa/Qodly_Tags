@@ -1,10 +1,12 @@
 import { useEnhancedNode } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { FC } from 'react';
+import { FC} from 'react';
 
 import { ITagsProps } from './Tags.config';
 
 const Tags: FC<ITagsProps> = ({ style, className, classNames = [] }) => {
+
+
   const {
     connectors: { connect },
   } = useEnhancedNode();

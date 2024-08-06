@@ -1,6 +1,6 @@
 import { useEnhancedNode } from '@ws-ui/webform-editor';
 import cn from 'classnames';
-import { FC, CSSProperties, useState } from 'react';
+import { FC, useState } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { IInputTagsProps } from './InputTags.config';
 
@@ -9,30 +9,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
     connectors: { connect },
   } = useEnhancedNode();
 
-  const tagsCss: CSSProperties = {
-    display: style?.display || 'inline-block',
-    backgroundColor: style?.backgroundColor || 'rgb(218, 216, 216)',
-    color: style?.color || 'rgb(48, 48, 48)',
-    paddingRight: style?.paddingRight || '6px',
-    paddingLeft: style?.paddingLeft || '6px',
-    paddingBottom: style?.paddingBottom || '6px',
-    paddingTop: style?.paddingTop || '6px',
-    marginRight: style?.marginRight || '2px',
-    marginBottom: style?.marginBottom || '0px',
-    marginLeft: style?.marginLeft || '0px',
-    marginTop: style?.marginTop || '0px',
-    fontFamily: style?.fontFamily || 'inherit',
-    fontWeight: style?.fontWeight || 400,
-    fontSize: style?.fontSize || '14px',
-    fontStyle: style?.fontStyle || 'normal',
-    textDecorationLine: style?.textDecorationLine || 'none',
-    textTransform: style?.textTransform || 'none',
-    borderColor: style?.borderColor || 'rgb(218, 216, 216)',
-    borderWidth: style?.borderWidth || '2px',
-    borderStyle: style?.borderStyle || 'solid',
-    borderRadius: style?.borderRadius || '12px',
-    alignItems: 'center',
-  };
+  
   const [tags, setTags] = useState([
     {
       name: 'Tag1',
@@ -57,7 +34,7 @@ const InputTags: FC<IInputTagsProps> = ({ style, className, classNames = [] }) =
   return (
     <div ref={connect} className={cn(className, classNames)}>
       {tags.map((Tag, index) => (
-        <div style={tagsCss} key={index}>
+        <div style={style} key={index}>
           {Tag.name}
           <IoIosCloseCircle
             onClick={() => remove(index)}
