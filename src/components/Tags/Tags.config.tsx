@@ -96,7 +96,7 @@ export default {
       borderWidth: '0px',
       borderStyle: 'none',
       alignItems: 'center',
-      borderRadius: '12px',
+      borderRadius: '11px',
     },
   },
 } as T4DComponentConfig<ITagsProps>;
